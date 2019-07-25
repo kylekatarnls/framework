@@ -14,25 +14,24 @@ matrix:
     - php: 7.3
     - php: 7.3
       env: SETUP=lowest
+    - php: nightly
+    - php: nightly
+      env: SETUP=lowest
 
 cache:
   directories:
     - $HOME/.composer/cache
 
 services:
-  - memcached
-  - redis-server
   - mysql
 
 before_install:
   - phpenv config-rm xdebug.ini || true
-  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - printf "\n" | pecl install -f redis-4.3.0
   - travis_retry composer self-update
   - mysql -e 'CREATE DATABASE forge;'
 
 install:
-  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
-  - if [[ $SETUP = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
+  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest --ignore-platform-reqs; fi
+  - if [[ $SETUP = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest --ignore-platform-reqs; fi
 
 script: vendor/bin/phpunit
