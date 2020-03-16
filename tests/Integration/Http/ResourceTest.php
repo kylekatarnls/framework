@@ -29,7 +29,7 @@ use Illuminate\Tests\Integration\Http\Fixtures\Subscription;
 use Orchestra\Testbench\TestCase;
 
 /**
- * @group integration
+ * @group integration-x
  */
 class ResourceTest extends TestCase
 {
@@ -1046,6 +1046,34 @@ class ResourceTest extends TestCase
             'data' => [
                 'user@example.com' => 'John',
                 'admin@example.com' => 'Hank',
+            ],
+        ]);
+    }
+
+    /**
+     * @group i
+     */
+    public function testTheResourceCanBeACollection()
+    {
+        $this->assertJsonResourceResponse(Collection::make([
+            [
+                'id' => 1,
+                'name' => 'name1',
+            ],
+            [
+                'id' => 2,
+                'name' => 'name2',
+            ],
+        ])->keyBy('id'), [
+            'data' => [
+                1 => [
+                    'id' => 1,
+                    'name' => 'name1',
+                ],
+                2 => [
+                    'id' => 2,
+                    'name' => 'name2',
+                ],
             ],
         ]);
     }

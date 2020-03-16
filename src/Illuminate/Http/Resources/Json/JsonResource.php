@@ -94,6 +94,8 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
         $data = $this->toArray(
             $request = $request ?: Container::getInstance()->make('request')
         );
+        var_dump($data);
+        exit;
 
         if ($data instanceof Arrayable) {
             $data = $data->toArray();
