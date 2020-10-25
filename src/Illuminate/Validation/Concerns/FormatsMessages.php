@@ -288,11 +288,26 @@ trait FormatsMessages
      */
     protected function replaceAttributePlaceholder($message, $value)
     {
-        return str_replace(
+        $message = preg_replace_callback('/:the-attribute-field/', function () use ($value) {
+            $default = 'The :attribute field';
+
+            if (function_exists('__')) {
+                $key = 'attribute.' . $value;
+                $translation = __($key);
+
+                return $key === $translation ? $default : $translation;
+            }
+
+            return $default;
+        }, $message);
+
+        $message = str_replace(
             [':attribute', ':ATTRIBUTE', ':Attribute'],
             [$value, Str::upper($value), Str::ucfirst($value)],
             $message
         );
+
+        return $message;
     }
 
     /**
