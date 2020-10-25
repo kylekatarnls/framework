@@ -457,7 +457,7 @@ class ValidationValidatorTest extends TestCase
     {
         // required_if:foo,bar
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.required_if' => 'The :attribute field is required when :other is :value.'], 'en');
+        $trans->addLines(['validation.required_if' => ':the-attribute-field is required when :other is :value.'], 'en');
         $trans->addLines(['validation.values.color.1' => 'red'], 'en');
         $v = new Validator($trans, ['color' => '1', 'bar' => ''], ['bar' => 'RequiredIf:color,1']);
         $this->assertFalse($v->passes());
@@ -466,7 +466,7 @@ class ValidationValidatorTest extends TestCase
 
         // required_if:foo,boolean
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.required_if' => 'The :attribute field is required when :other is :value.'], 'en');
+        $trans->addLines(['validation.required_if' => ':the-attribute-field is required when :other is :value.'], 'en');
         $trans->addLines(['validation.values.subscribe.false' => 'false'], 'en');
         $v = new Validator($trans, ['subscribe' => false, 'bar' => ''], ['bar' => 'RequiredIf:subscribe,false']);
         $this->assertFalse($v->passes());
@@ -474,7 +474,7 @@ class ValidationValidatorTest extends TestCase
         $this->assertSame('The bar field is required when subscribe is false.', $v->messages()->first('bar'));
 
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.required_if' => 'The :attribute field is required when :other is :value.'], 'en');
+        $trans->addLines(['validation.required_if' => ':the-attribute-field is required when :other is :value.'], 'en');
         $trans->addLines(['validation.values.subscribe.true' => 'true'], 'en');
         $v = new Validator($trans, ['subscribe' => true, 'bar' => ''], ['bar' => 'RequiredIf:subscribe,true']);
         $this->assertFalse($v->passes());
@@ -483,7 +483,7 @@ class ValidationValidatorTest extends TestCase
 
         // required_unless:foo,bar
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.required_unless' => 'The :attribute field is required unless :other is in :values.'], 'en');
+        $trans->addLines(['validation.required_unless' => ':the-attribute-field is required unless :other is in :values.'], 'en');
         $trans->addLines(['validation.values.color.1' => 'red'], 'en');
         $v = new Validator($trans, ['color' => '2', 'bar' => ''], ['bar' => 'RequiredUnless:color,1']);
         $this->assertFalse($v->passes());
@@ -502,7 +502,7 @@ class ValidationValidatorTest extends TestCase
 
         // date_equals:tomorrow
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.date_equals' => 'The :attribute must be a date equal to :date.'], 'en');
+        $trans->addLines(['validation.date_equals' => ':the-attribute-field must be a date equal to :date.'], 'en');
         $trans->addLines(['validation.values.date.tomorrow' => 'the day after today'], 'en');
         $v = new Validator($trans, ['date' => date('Y-m-d')], ['date' => 'date_equals:tomorrow']);
         $this->assertFalse($v->passes());
@@ -1102,7 +1102,7 @@ class ValidationValidatorTest extends TestCase
 
         // error message when passed multiple values (required_if:foo,bar,baz)
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.required_if' => 'The :attribute field is required when :other is :value.'], 'en');
+        $trans->addLines(['validation.required_if' => ':the-attribute-field is required when :other is :value.'], 'en');
         $v = new Validator($trans, ['first' => 'dayle', 'last' => ''], ['last' => 'RequiredIf:first,taylor,dayle']);
         $this->assertFalse($v->passes());
         $this->assertSame('The last field is required when first is dayle.', $v->messages()->first('last'));
@@ -1140,7 +1140,7 @@ class ValidationValidatorTest extends TestCase
 
         // error message when passed multiple values (required_unless:foo,bar,baz)
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.required_unless' => 'The :attribute field is required unless :other is in :values.'], 'en');
+        $trans->addLines(['validation.required_unless' => ':the-attribute-field is required unless :other is in :values.'], 'en');
         $v = new Validator($trans, ['first' => 'dayle', 'last' => ''], ['last' => 'RequiredUnless:first,taylor,sven']);
         $this->assertFalse($v->passes());
         $this->assertSame('The last field is required unless first is in taylor, sven.', $v->messages()->first('last'));
@@ -1490,13 +1490,13 @@ class ValidationValidatorTest extends TestCase
         $this->assertTrue($v->passes());
 
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.ends_with' => 'The :attribute must end with one of the following values :values'], 'en');
+        $trans->addLines(['validation.ends_with' => ':the-attribute-field must end with one of the following values :values'], 'en');
         $v = new Validator($trans, ['url' => 'laravel.com'], ['url' => 'ends_with:http']);
         $this->assertFalse($v->passes());
         $this->assertSame('The url must end with one of the following values http', $v->messages()->first('url'));
 
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.ends_with' => 'The :attribute must end with one of the following values :values'], 'en');
+        $trans->addLines(['validation.ends_with' => ':the-attribute-field must end with one of the following values :values'], 'en');
         $v = new Validator($trans, ['url' => 'laravel.com'], ['url' => 'ends_with:http,https']);
         $this->assertFalse($v->passes());
         $this->assertSame('The url must end with one of the following values http, https', $v->messages()->first('url'));
@@ -1517,13 +1517,13 @@ class ValidationValidatorTest extends TestCase
         $this->assertTrue($v->passes());
 
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.starts_with' => 'The :attribute must start with one of the following values :values'], 'en');
+        $trans->addLines(['validation.starts_with' => ':the-attribute-field must start with one of the following values :values'], 'en');
         $v = new Validator($trans, ['url' => 'laravel.com'], ['url' => 'starts_with:http']);
         $this->assertFalse($v->passes());
         $this->assertSame('The url must start with one of the following values http', $v->messages()->first('url'));
 
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.starts_with' => 'The :attribute must start with one of the following values :values'], 'en');
+        $trans->addLines(['validation.starts_with' => ':the-attribute-field must start with one of the following values :values'], 'en');
         $v = new Validator($trans, ['url' => 'laravel.com'], ['url' => 'starts_with:http,https']);
         $this->assertFalse($v->passes());
         $this->assertSame('The url must start with one of the following values http, https', $v->messages()->first('url'));
@@ -1857,7 +1857,7 @@ class ValidationValidatorTest extends TestCase
     public function testValidateMutlpleOf($input, $allowed, $passes)
     {
         $trans = $this->getIlluminateArrayTranslator();
-        $trans->addLines(['validation.multiple_of' => 'The :attribute must be a multiple of :value'], 'en');
+        $trans->addLines(['validation.multiple_of' => ':the-attribute-field must be a multiple of :value'], 'en');
 
         $v = new Validator($trans, ['foo' => $input], ['foo' => "multiple_of:{$allowed}"]);
 
